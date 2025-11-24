@@ -1,0 +1,38 @@
+.downloads-container {
+    padding: 20px;
+  }
+  
+  .pdf-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+  }
+  
+  .pdf-info {
+    cursor: pointer;
+  }
+  
+  .delete-btn {
+    background: #ff4d4d;
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .clear-btn {
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  
