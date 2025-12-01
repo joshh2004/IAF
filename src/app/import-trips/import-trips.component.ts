@@ -3,22 +3,25 @@ import { Component,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TripService, Trip } from '../trip.service'; // <-- shared service
-
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-import-trips',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './import-trips.component.html',
   styleUrls: ['./import-trips.component.css']
 })
 export class ImportTripsComponent implements OnInit {
   trips: Trip[] = [];
-
+  displayedColumns: string[] = ['name', 'duration', 'action'];
   constructor(private router: Router, private tripService: TripService) {}
 
   ngOnInit() {
     // restore trips if previously loaded
     this.trips = this.tripService.trips || [];
+    this.importTrips();
   }
 
   async importTrips() {
@@ -27,7 +30,7 @@ export class ImportTripsComponent implements OnInit {
     const result = await window.electronAPI.importTrips();
     if (!result) return alert("No trips found");
 
-    this.trips = result.trips.map(name => ({ name, status: 'Not Processed' }));
+    this.trips = result.trips.map(name => ({ name, duration: '', status: 'Not Processed' }));
     this.tripService.trips = this.trips; // save to service
   }
 

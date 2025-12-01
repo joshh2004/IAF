@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 
 declare global {
   interface Window {
@@ -21,7 +27,16 @@ interface Trip {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule, 
+    RouterModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatToolbarModule,
+    MatDividerModule
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -30,6 +45,7 @@ export class AppComponent {
   trips: Trip[] = [];
   processedTrips: Trip[] = [];
   currentPage: 'import' | 'summary' = 'import';
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
   constructor(private router: Router) {}
 
@@ -118,5 +134,13 @@ export class AppComponent {
   // -------------------------
   deleteTrip(trip: Trip) {
     this.trips = this.trips.filter(t => t !== trip);
+  }
+
+  toggleSidenav() {
+    this.sidenav.toggle();
+  }
+
+  goto(path: string) {
+    this.router.navigate([path])
   }
 }
