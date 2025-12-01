@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const HARDCODED_FOLDER = 'C:\\Users\\294580\\Desktop\\Trip-Collection';
+const HARDCODED_FOLDER = 'C:\\Users\\224349\\Desktop\\Trip-Collection';
 
 function createWindow() {
   const win = new BrowserWindow({

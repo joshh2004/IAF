@@ -1,0 +1,21 @@
+:host {
+    
+}
+.home-main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.home-section {
+    width: 415px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-button {
+    width: 300px;
+    height: 60px;
+}

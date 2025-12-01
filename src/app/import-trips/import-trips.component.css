@@ -90,3 +90,20 @@
     cursor: pointer;
   }
   
+  .process-trip-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #191951;
+  }
+
+  .action-items {
+    display: flex;
+    align-items: center;
+  }
+
+  .action-btn {
+    margin-right: 10px;
+  }

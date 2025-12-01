@@ -1,23 +1,54 @@
-  <!-- ROOT PAGE: Import Trips -->
-<div *ngIf="!trips.length" class="trip-container">
-    <button (click)="importTrips()" class="import-btn">Import Trips</button>
-  </div>
-  
-  <div *ngIf="trips.length" class="trip-container">
-    <div *ngFor="let trip of trips" class="trip-row">
-      <div class="trip-card">
-        <div class="trip-name">{{ trip.name }}</div>
-        <button (click)="processTrip(trip)" [disabled]="trip.status === 'Processed'" class="process-btn">
-          Process
-        </button>
-        <div
-          class="trip-status"
-          [ngClass]="{'processed': trip.status === 'Processed', 'not-processed': trip.status === 'Not Processed'}"
-        >
-          {{ trip.status }}
-        </div>
+<div class="process-trip-title">PROCESS TRIPS</div>
+<!-- <div *ngIf="trips.length" class="trip-container">
+  <div *ngFor="let trip of trips" class="trip-row">
+    <div class="trip-card">
+      <div class="trip-name">{{ trip.name }}</div>
+      <button (click)="processTrip(trip)" [disabled]="trip.status === 'Processed'" class="process-btn">
+        Process
+      </button>
+      <div
+        class="trip-status"
+        [ngClass]="{'processed': trip.status === 'Processed', 'not-processed': trip.status === 'Not Processed'}"
+      >
+        {{ trip.status }}
       </div>
-      <button (click)="deleteTrip(trip)" class="delete-btn">Delete</button>
     </div>
+    <button (click)="deleteTrip(trip)" class="delete-btn">Delete</button>
   </div>
-  
+</div> -->
+<table mat-table [dataSource]="trips" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="duration">
+    <th mat-header-cell *matHeaderCellDef> Duration </th>
+    <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="driver">
+    <th mat-header-cell *matHeaderCellDef> Driver Name </th>
+    <td mat-cell *matCellDef="let element">  </td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="action-items">
+        <button class="action-btn" matIconButton aria-label="Delete Trip">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button class="action-btn" (click)="processTrip(element)" mat-flat-button *ngIf="element.status === 'Not Processed' ">Process Trip</button>
+        <button class="action-btn" mat-flat-button *ngIf="element.status !== 'Not Processed' ">View Trip</button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+

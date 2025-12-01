@@ -89,3 +89,29 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.layout {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+}
+
+mat-toolbar button {
+  margin-right: 10px;
+}
+
+.content {
+  padding: 20px;
+  background-image: url('../assets/images/image 24.png');
+  min-height: 446px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  --background-size: 80%;
+}
+
+.menu-item {
+  font-size: 17px;
+  height: 16px;
+}
