@@ -1,0 +1,127 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-content">
+  <!-- Regular dashboard elements (overview, charts, events, video, etc.) -->
+</div>
+
+<!-- Hidden container only for PDF export -->
+<div #pdfContent style="display:none;">
+  <h2>{{ trip.name }}</h2>
+  <p>Overall Score: {{ overallScore }} ({{ getScoreLabel() }})</p>
+
+  <div *ngFor="let p of parameterKeys">
+    <h3>{{ p }}</h3>
+    <ul>
+      <li *ngFor="let ev of eventTimeline[p]">
+        {{ secondsToLabel(ev.startOffset) }} - {{ secondsToLabel(ev.endOffset) }} ({{ ev.duration }} sec)
+      </li>
+    </ul>
+  </div>
+</div>
+
+  <button (click)="goBack()" class="back-btn">⬅ Back to Import Trips</button>
+
+  <div *ngIf="headingVisible" id="tripOverviewPage" class="result-container">
+    <!-- ROW 1: Summary + Donut -->
+    <div class="row">
+      <div class="col summary-col card">
+        <h3>Trip Overview</h3>
+        <p><strong>Trip ID:</strong> {{ trip?.tripId }}</p>
+        <p><strong>Distance:</strong> {{ trip?.distanceKm }} km</p>
+        <p><strong>Duration:</strong> {{ formattedTripDuration }}</p>
+        <p><strong>Start:</strong> {{ tripStartLabel }}</p>
+        <p><strong>End:</strong> {{ tripEndLabel }}</p>
+      </div>
+  
+      <div class="col donut-col card chart-area">
+        <h3>Overall Score</h3>
+        <svg width="220" height="220" viewBox="0 0 220 220">
+          <circle cx="110" cy="110" r="80" stroke="#e74c3c" stroke-width="15"
+            fill="transparent"
+            [attr.stroke-dasharray]="redArc + ' ' + (totalCircumference - redArc)"
+            stroke-linecap="round"
+            transform="rotate(-90 110 110)"></circle>
+  
+          <circle cx="110" cy="110" r="80" stroke="#3498db" stroke-width="15"
+            fill="transparent"
+            [attr.stroke-dasharray]="blueArc + ' ' + (totalCircumference - blueArc)"
+            [attr.stroke-dashoffset]="-redArc"
+            stroke-linecap="round"
+            transform="rotate(-90 110 110)"></circle>
+  
+          <circle cx="110" cy="110" r="80" stroke="#2ecc71" stroke-width="15"
+            fill="transparent"
+            [attr.stroke-dasharray]="greenArc + ' ' + (totalCircumference - greenArc)"
+            [attr.stroke-dashoffset]="-(redArc + blueArc)"
+            stroke-linecap="round"
+            transform="rotate(-90 110 110)"></circle>
+  
+          <circle cx="110" cy="110" r="80" stroke="#e6e6e6" stroke-width="15"
+            fill="transparent"
+            [attr.stroke-dasharray]="emptyArc + ' ' + (totalCircumference - emptyArc)"
+            [attr.stroke-dashoffset]="-(redArc + blueArc + greenArc)"
+            stroke-linecap="round"
+            transform="rotate(-90 110 110)"></circle>
+  
+          <text x="110" y="118" text-anchor="middle" class="score-text">{{ overallScore }}</text>
+          <text x="110" y="145" text-anchor="middle" class="score-label">{{ getScoreLabel() }}</text>
+        </svg>
+      </div>
+    </div>
+  
+    <!-- ROW 2: Events list + Timeline -->
+    <div class="row">
+      <div class="col left-col card">
+        <h3>Events During Trip</h3>
+        <div *ngFor="let param of parameterKeys">
+          <div class="event-header" (click)="toggleParam(param)">
+            <span>{{ param }} ({{ eventTimeline[param]?.length || 0 }})</span>
+            <span class="arrow">{{ expandedParam === param ? '▲' : '▼' }}</span>
+          </div>
+  
+          <div *ngIf="expandedParam === param" class="event-details">
+            <div *ngFor="let ev of eventTimeline[param]; let i = index" class="event-row">
+              <div>
+                <strong>#{{ i + 1 }}</strong>
+                <div>Start: {{ toIsoLocal(ev.startIso) }} ({{ secondsToLabel(ev.startOffset) }})</div>
+                <div>End: {{ toIsoLocal(ev.endIso) }} ({{ secondsToLabel(ev.endOffset) }})</div>
+                <div>Duration: {{ secondsToLabel(ev.duration) }}</div>
+              </div>
+              <div class="event-actions">
+                <button (click)="playEventSnippet(ev.startOffset, ev.endOffset)">Play</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col right-col card">
+        <h3>Event Timeline</h3>
+        <div class="timeline-canvas">
+          <canvas id="mergedEventTimelineChart"></canvas>
+        </div>
+        <p class="hint">Click a bar to play the corresponding video snippet (if video uploaded).</p>
+      </div>
+    </div>
+  
+    <!-- VIDEO MODAL -->
+    <div id="videoModal" class="video-modal" [style.display]="videoModalOpen ? 'block' : 'none'">
+      <div class="video-modal-content">
+        <span class="close-btn" (click)="closeVideo()">&times;</span>
+        <video id="videoPlayer" #eventVideo width="100%" controls [src]="videoFileUrl"></video>
+      </div>
+    </div>
+
+    <video width="600" controls *ngIf="videoFileUrl"
+    [src]="videoFileUrl">
+<source [src]="videoFileUrl" type="video/mp4">
+</video>
+
+
+
+      
+  
+    <div class="actions-row">
+      <!-- optional actions -->
+    </div>
+  </div>
+  

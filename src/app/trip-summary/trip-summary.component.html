@@ -1,0 +1,31 @@
+<!-- ROOT PAGE: Trip Summary -->
+<div *ngIf="!trips.length" class="empty-state">
+  <p>No processed trips yet.</p>
+</div>
+
+<div *ngIf="trips.length" class="trip-summary-container">
+  <div 
+    *ngFor="let trip of trips" 
+    class="trip-card"
+    (click)="goToDashboard(trip)"
+  >
+    <div class="trip-header">
+      <div class="trip-name">{{ trip.name }}</div>
+
+      <span
+        class="trip-status"
+        [ngClass]="{
+          'processed': trip.status === 'Processed',
+          'not-processed': trip.status === 'Not Processed'
+        }"
+      >
+        {{ trip.status }}
+      </span>
+    </div>
+
+    <div class="trip-details">
+      <div><strong>Trip ID:</strong> {{ trip.tripId }}</div>
+      <div><strong>Driver Score:</strong> {{ trip.driverScore }}</div>
+    </div>
+  </div>
+</div>

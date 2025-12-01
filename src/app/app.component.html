@@ -1,0 +1,8 @@
+<!-- app.component.html -->
+<nav>
+  <button (click)="togglePage()">
+    {{ currentPage === 'import' ? 'Trip Summary' : 'Trip Import' }}
+  </button>
+</nav>
+
+<router-outlet></router-outlet>

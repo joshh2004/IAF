@@ -1,0 +1,23 @@
+  <!-- ROOT PAGE: Import Trips -->
+<div *ngIf="!trips.length" class="trip-container">
+    <button (click)="importTrips()" class="import-btn">Import Trips</button>
+  </div>
+  
+  <div *ngIf="trips.length" class="trip-container">
+    <div *ngFor="let trip of trips" class="trip-row">
+      <div class="trip-card">
+        <div class="trip-name">{{ trip.name }}</div>
+        <button (click)="processTrip(trip)" [disabled]="trip.status === 'Processed'" class="process-btn">
+          Process
+        </button>
+        <div
+          class="trip-status"
+          [ngClass]="{'processed': trip.status === 'Processed', 'not-processed': trip.status === 'Not Processed'}"
+        >
+          {{ trip.status }}
+        </div>
+      </div>
+      <button (click)="deleteTrip(trip)" class="delete-btn">Delete</button>
+    </div>
+  </div>
+  
