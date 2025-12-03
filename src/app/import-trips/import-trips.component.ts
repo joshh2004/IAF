@@ -61,9 +61,6 @@ export class ImportTripsComponent implements OnInit {
     });
   }
   
-  
-  
-
   deleteTrip(trip: Trip) {
     this.trips = this.trips.filter(t => t !== trip);
     this.tripService.trips = this.trips; // update service

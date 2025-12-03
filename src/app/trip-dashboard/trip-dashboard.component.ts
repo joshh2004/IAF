@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { DriverScoreComponent } from '../driver-score/driver-score.component';
 type EventEntry = {
   startIso: string;
   endIso: string;
@@ -21,7 +23,7 @@ type EventEntry = {
 
 @Component({
   selector: 'app-trip-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, DriverScoreComponent],
   templateUrl: './trip-dashboard.component.html',
   styleUrls: ['./trip-dashboard.component.css']
 })
@@ -51,6 +53,12 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
 
   mergedChart: any = null;
   expandedParam: string | null = null;
+
+  segments: any[] = [
+    { value: 40, color: '#1E2362' },     // dark
+    { value: 20, color: '#6B73C6' },     // medium
+    { value: 40, color: '#D8DBF8' }      // light
+  ]
 
   constructor(private router: Router) {}
 
@@ -359,7 +367,7 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/import-trips']);
   }
 
   toggleParam(p: string) {
@@ -377,13 +385,13 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
     const video = this.eventVideo?.nativeElement;
     if (video) video.pause();
 
-    if (this.tripName && window.electronAPI?.deleteTripFolder) {
-      try {
-        await window.electronAPI.deleteTripFolder(this.tripName);
-        console.log(`Trip folder "${this.tripName}" deleted.`);
-      } catch (err) {
-        console.warn('Error deleting trip folder:', err);
-      }
-    }
+    // if (this.tripName && window.electronAPI?.deleteTripFolder) {
+    //   try {
+    //     await window.electronAPI.deleteTripFolder(this.tripName);
+    //     console.log(`Trip folder "${this.tripName}" deleted.`);
+    //   } catch (err) {
+    //     console.warn('Error deleting trip folder:', err);
+    //   }
+    // }
   }
 }

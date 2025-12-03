@@ -1,0 +1,72 @@
+{
+  "tripId": "TRIP-88921",
+  "tripStartTime": "2025-11-26T03:10:00Z",
+  "tripEndTime": "2025-11-26T07:44:00Z",
+  "distanceKm": 142.3,
+  "tripDurationMin": 274,
+  "overallScore": 75,
+  "driving_score": {
+  "severity_sigmas": {
+    "high": 2.441640589203002,
+    "medium": 4.920897299651731,
+    "comfort": 99.19206798266572,
+    "economy": 100.0,
+    "total": 32.291339022109874
+  },
+  "severity_threshold_breaches": [
+    {
+      "param_name": "seatbelt_violation",
+      "breach_time_stamps": {
+        "high": [
+          "2023-01-01T00:00:00Z",
+          "2023-01-01T00:03:00Z"
+        ],
+        "medium": [],
+        "comfort": [],
+        "economy": []
+      }
+    },
+    {
+      "param_name": "harsh_braking",
+      "breach_time_stamps": {
+        "high": [],
+        "medium": [],
+        "comfort": [
+          "2023-01-01T00:00:00Z",
+          "2023-01-01T00:03:00Z"
+        ],
+        "economy": []
+      }
+    },
+    {
+      "param_name": "mobile_phone_usage",
+      "breach_time_stamps": {
+        "high": [],
+        "medium": [
+          "2023-01-01T00:01:00Z",
+          "2023-01-01T00:02:00Z"
+        ],
+        "comfort": [],
+        "economy": []
+      }
+    },
+    {
+      "param_name": "drowsiness_level",
+      "breach_time_stamps": {
+        "high": [
+          "2023-01-01T00:00:00Z"
+        ],
+        "medium": [
+          "2023-01-01T00:02:00Z"
+        ],
+        "comfort": [
+          "2023-01-01T00:03:00Z"
+        ],
+        "economy": [
+          "2023-01-01T00:01:00Z"
+        ]
+      }
+    }
+  ]
+}
+}

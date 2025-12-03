@@ -1,0 +1,20 @@
+<div class="panel">
+    <span class="name-label">Driver Name</span>
+    <input class="name-input" matInput>
+    <button class="custom-button" mat-flat-button>View Driver Score</button>
+</div>
+<div class="panel-details">
+    <div class="driver-details">
+        <span>Driver Name</span>
+        <span>Total driving hours</span>
+        <span>Number of trips</span>
+    </div>
+    <div>
+        <app-driver-score [segments]="segments" [score]="68"></app-driver-score>
+    </div>
+    <div class="sub-details">
+        <span>Economy Score: 40</span>
+        <span>Comfort Score: 15</span>
+        <span>Saftey Score: 13</span>
+    </div>
+</div>

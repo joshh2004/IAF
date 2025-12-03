@@ -24,8 +24,6 @@
     background: var(--card-bg);
     padding: 18px;
     border-radius: var(--radius);
-    box-shadow: 0 6px 18px rgba(15,23,42,0.04);
-    border: 1px solid rgba(0,0,0,0.03);
   }
   
   /* Trip overview */
@@ -79,4 +77,52 @@
   .back-btn:hover {
     background-color: #ddd;
   }
+  .dasboard-container {
+    background-color: #E9F1F6;
+    margin-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
+  .dashboard-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #191951;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .backbtn {
+    text-align: left;
+    margin-left: 30px;
+    width: 360px;
+  }
+  .title{
+    flex: 1;
+  }
+  .back-icon {
+    cursor: pointer;
+    background: #BED2E6;
+    border: none;
+    color: #191951;
+  }
+  .trip-details-data {
+    background-color: #fff;
+    padding: 8px;
+  }
+  .trip-summary-title {
+    font-size: 16px;
+    color: #191951;
+  }
+  .events-title {
+    font-size: 16px;
+    color: #191951;
+  }
+  .timeline-title {
+    font-size: 16px;
+    color: #191951;
+    text-transform: uppercase;
+  }
+  
   

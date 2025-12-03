@@ -1,0 +1,29 @@
+ .score-wrapper {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #343a60;
+    font-weight: 600;
+  }
+  
+  .score-number {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: -10px;
+    color: #1E2362;
+  }
+  
+  .score-text {
+    font-size: 16px;
+    color: #6c6f8d;
+    margin-top: -5px;
+  }
+  
+  svg path {
+    transition: stroke-dasharray 0.6s ease;
+  }
+  

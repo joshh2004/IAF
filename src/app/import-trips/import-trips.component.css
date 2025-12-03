@@ -34,7 +34,7 @@
     background-color: #f5f5f5;
   }
   
-  .trip-name {
+  .trip-background {
     font-weight: bold;
     flex: 1;
   }
@@ -106,4 +106,23 @@
 
   .action-btn {
     margin-right: 10px;
+    background-color: #191951 !important;
+  }
+
+  .process-trip-details {
+    background-color: #fff;
+    padding: 30px;
+    margin-top: 20px;
+  }
+
+  .trip-background {
+    background-color: #E9F1F6 !important;
+  }
+  .trip-border {
+    border-bottom: 2px solid #fff !important;
+  }
+  .delete-btn {
+    border: 0px;
+    background: white;
+    color: #191951;
   }
