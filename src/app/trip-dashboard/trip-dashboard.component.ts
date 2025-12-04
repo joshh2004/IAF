@@ -13,6 +13,7 @@ import jsPDF from 'jspdf';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DriverScoreComponent } from '../driver-score/driver-score.component';
+import { color } from 'html2canvas/dist/types/css/types/color';
 type EventEntry = {
   startIso: string;
   endIso: string;
@@ -35,7 +36,7 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
   trip: any = null;
   overallScore = 0;
 
-  parameterKeys: string[] = [];
+  parameterKeys: any[] = [];
   eventTimeline: Record<string, EventEntry[]> = {};
   parameterWeights: Record<string, number> = {};
 
@@ -53,12 +54,14 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
 
   mergedChart: any = null;
   expandedParam: string | null = null;
-
+  colorList: string[] = ['#1E2362', '#6B73C6', '#D8DBF8', '#191d52', '#0f1130'];
   segments: any[] = [
-    { value: 40, color: '#1E2362' },     // dark
-    { value: 20, color: '#6B73C6' },     // medium
-    { value: 40, color: '#D8DBF8' }      // light
-  ]
+    { name: 'n1', value: 40, color: '#1E2362' },     // dark
+    { name: 'n2', value: 20, color: '#6B73C6' },     // medium
+    { name: 'n3', value: 40, color: '#D8DBF8' }      // light
+  ];
+
+  totalDriverScore:number = 0;
 
   constructor(private router: Router) {}
 
@@ -90,10 +93,54 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
     this.overallScore = Number(json.overallScore || 0);
 
     this.prepareParameters();
-    this.updateDonutSegments();
+    this.driverScore()
+    //this.updateDonutSegments();
     this.renderMergedTimeline();
 
     this.headingVisible = true;
+  }
+
+  getEventName(str: string): string{
+    let eventName: string = '';
+    switch(str){
+      case 'seatbelt_violation':
+        eventName = 'Seat Belt';
+      break;
+      case 'harsh_braking':
+        eventName = 'Harsh Braking';
+      break;
+      case 'mobile_phone_usage':
+        eventName = 'Mobile Phone Usage';
+      break;
+      case 'drowsiness_level':
+        eventName = 'Drowsiness';
+      break;
+    }
+    return eventName;
+  }
+
+  getEventCount(obj: any): number {
+    let count: number = 0;
+    let item = obj['breach_time_stamps'];
+    Object.keys(item).forEach((key)=>{
+      count = count + item[key].length;
+    });
+    return count;
+  }
+
+  driverScore(): void {
+    let scoreDetails: any = this.trip?.driving_score?.severity_sigmas;
+    this.totalDriverScore = this.trip?.overallScore;
+    let scores: any = [];
+    Object.keys(scoreDetails).forEach((key: string, i)=> {
+      let obj = {
+        name: key,
+        value: scoreDetails[key],
+        color: this.colorList[i]
+      }
+      scores.push(obj);
+    });
+    this.segments = scores;
   }
 
   prepareParameters() {
@@ -101,46 +148,49 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
     this.parameterWeights = {};
     this.eventTimeline = {};
 
-    const categories = this.trip?.categories ?? {};
+    this.parameterKeys = this.trip?.driving_score?.severity_threshold_breaches;
+    console.log('this.trip', this.trip);
+    console.log('this.parameterKeys', this.parameterKeys);
+    // const categories = this.trip?.categories ?? {};
 
-    for (const catKey of Object.keys(categories)) {
-      const params = categories[catKey]?.parameters ?? {};
+    // for (const catKey of Object.keys(categories)) {
+    //   const params = categories[catKey]?.parameters ?? {};
 
-      for (const pKey of Object.keys(params)) {
-        const p = params[pKey];
-        this.parameterWeights[pKey] = p.weight ?? 0;
+    //   for (const pKey of Object.keys(params)) {
+    //     const p = params[pKey];
+    //     this.parameterWeights[pKey] = p.weight ?? 0;
 
-        const events = (p.events ?? []).map((ev: any) => {
-          const startMs = new Date(ev.startTime).getTime();
-          const endMs = new Date(ev.endTime).getTime();
-          const tripStartMs = new Date(this.trip.tripStartTime).getTime();
+    //     const events = (p.events ?? []).map((ev: any) => {
+    //       const startMs = new Date(ev.startTime).getTime();
+    //       const endMs = new Date(ev.endTime).getTime();
+    //       const tripStartMs = new Date(this.trip.tripStartTime).getTime();
 
-          const startOffset = Math.max(
-            0,
-            Math.round((startMs - tripStartMs) / 1000)
-          );
-          const endOffset = Math.max(
-            0,
-            Math.round((endMs - tripStartMs) / 1000)
-          );
+    //       const startOffset = Math.max(
+    //         0,
+    //         Math.round((startMs - tripStartMs) / 1000)
+    //       );
+    //       const endOffset = Math.max(
+    //         0,
+    //         Math.round((endMs - tripStartMs) / 1000)
+    //       );
 
-          return {
-            startIso: ev.startTime,
-            endIso: ev.endTime,
-            startOffset,
-            endOffset,
-            duration: endOffset - startOffset
-          };
-        });
+    //       return {
+    //         startIso: ev.startTime,
+    //         endIso: ev.endTime,
+    //         startOffset,
+    //         endOffset,
+    //         duration: endOffset - startOffset
+    //       };
+    //     });
 
-        this.eventTimeline[pKey] = events;
-        this.parameterKeys.push(pKey);
-      }
-    }
+    //     this.eventTimeline[pKey] = events;
+    //     this.parameterKeys.push(pKey);
+    //   }
+    // }
 
-    this.parameterKeys.sort(
-      (a, b) => (this.parameterWeights[b] ?? 0) - (this.parameterWeights[a] ?? 0)
-    );
+    // this.parameterKeys.sort(
+    //   (a, b) => (this.parameterWeights[b] ?? 0) - (this.parameterWeights[a] ?? 0)
+    // );
   }
 
   // ---------------------------------------------------------

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 interface GaugeSegment {
   value: number;
   color: string;
+  name: string;
 }
 
 @Component({

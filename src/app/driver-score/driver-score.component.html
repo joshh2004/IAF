@@ -1,23 +1,28 @@
-<div class="score-wrapper">
-  <h3>DRIVER SCORE</h3>
-
-  <svg width="200" height="120" viewBox="0 0 200 120">
-    
-    <!-- Loop to draw each colored segment -->
-    <ng-container *ngFor="let seg of dashSegments; let i = index">
-      <path
-        d="M20 100 A80 80 0 0 1 180 100"
-        [attr.stroke]="seg.color"
-        stroke-width="15"
-        stroke-linecap="round"
-        fill="none"
-        [attr.stroke-dasharray]="seg.length + ' ' + totalLength"
-        [attr.stroke-dashoffset]="seg.offset"
-      ></path>
-    </ng-container>
-
-  </svg>
-
-  <div class="score-number">{{ score }}</div>
-  <div class="score-text">Average</div>
+<div class="score-holder">
+  <div class="score-wrapper">
+    <h3>DRIVER SCORE</h3>
+    <svg width="200" height="120" viewBox="0 0 200 120">
+      <!-- Loop to draw each colored segment -->
+      <ng-container *ngFor="let seg of dashSegments; let i = index">
+        <path
+          d="M20 100 A80 80 0 0 1 180 100"
+          [attr.stroke]="seg.color"
+          stroke-width="15"
+          stroke-linecap="round"
+          fill="none"
+          [attr.stroke-dasharray]="seg.length + ' ' + totalLength"
+          [attr.stroke-dashoffset]="seg.offset"
+        ></path>
+      </ng-container>
+    </svg>
+    <div class="score-number">{{ score }}</div>
+    <div class="score-text">Average</div>
+  </div>
+  <div>
+    <div *ngFor="let sg of segments" class="segment-data">
+      <span [ngStyle]="{'background-color': sg.color}" class="color-segment"></span>
+      <span class="segment-name">{{sg.name}}: </span>
+      <span>{{sg.value | number : '1.2-2' }}</span>
+    </div>
+  </div>
 </div>

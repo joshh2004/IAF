@@ -10,8 +10,8 @@ import { DriverScoreComponent } from '../driver-score/driver-score.component';
 })
 export class DriverPanelComponent {
   segments: any[] = [
-    { value: 40, color: '#1E2362' },     // dark
-    { value: 20, color: '#6B73C6' },     // medium
-    { value: 40, color: '#D8DBF8' }      // light
+    { name: 'Economy Score', value: 40, color: '#1E2362' },     // dark
+    { name: 'Comfort Score', value: 20, color: '#6B73C6' },     // medium
+    { name: 'Saftey Score', value: 40, color: '#D8DBF8' }      // light
   ]
 }

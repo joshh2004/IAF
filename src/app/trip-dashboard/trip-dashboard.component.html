@@ -38,7 +38,7 @@
         </div>
     
         <div class="col donut-col card chart-area">
-          <app-driver-score [segments]="segments" [score]="68"></app-driver-score>
+          <app-driver-score [segments]="segments" [score]="totalDriverScore"></app-driver-score>
           <!-- <h3>Overall Score</h3>
           <svg width="220" height="220" viewBox="0 0 220 220">
             <circle cx="110" cy="110" r="80" stroke="#e74c3c" stroke-width="15"
@@ -80,11 +80,12 @@
           <h3 class="events-title">EVENTS DURING TRIP</h3>
           <div *ngFor="let param of parameterKeys">
             <div class="event-header" (click)="toggleParam(param)">
-              <span>{{ param }} ({{ eventTimeline[param]?.length || 0 }})</span>
-              <span class="arrow">{{ expandedParam === param ? '▲' : '▼' }}</span>
+              <span>{{ getEventName(param.param_name) }}</span>
+              <span>{{ getEventCount(param) }}</span>
+              <!-- <span class="arrow">{{ expandedParam === param ? '▲' : '▼' }}</span> -->
             </div>
     
-            <div *ngIf="expandedParam === param" class="event-details">
+            <!-- <div *ngIf="expandedParam === param" class="event-details">
               <div *ngFor="let ev of eventTimeline[param]; let i = index" class="event-row">
                 <div>
                   <strong>#{{ i + 1 }}</strong>
@@ -96,7 +97,7 @@
                   <button (click)="playEventSnippet(ev.startOffset, ev.endOffset)">Play</button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
     
