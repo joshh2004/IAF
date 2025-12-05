@@ -55,11 +55,7 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
   mergedChart: any = null;
   expandedParam: string | null = null;
   colorList: string[] = ['#1E2362', '#6B73C6', '#D8DBF8', '#191d52', '#0f1130'];
-  segments: any[] = [
-    { name: 'n1', value: 40, color: '#1E2362' },     // dark
-    { name: 'n2', value: 20, color: '#6B73C6' },     // medium
-    { name: 'n3', value: 40, color: '#D8DBF8' }      // light
-  ];
+  segments: any[] = [];
 
   totalDriverScore:number = 0;
 
@@ -256,19 +252,36 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
   // ---------------------------------------------------------
   renderMergedTimeline() {
     const flat: any[] = [];
+    const breaches: any[] = this.trip?.driving_score?.severity_threshold_breaches;
+    breaches.forEach((breach:any)=>{
+      Object.keys(breach.breach_time_stamps).forEach((item)=>{
+        breach.breach_time_stamps[item].forEach((elem: any)=>{
+          const startMs = new Date(elem).getTime();      
+          const tripStartMs = new Date(this.trip.tripStartTime).getTime();
+          const startOffset = Math.max(0,Math.round((startMs - tripStartMs) / 1000));
+          console.log('startOffset', startOffset);
+          flat.push({
+            x: startOffset,
+            y: 2,
+            eventType: breach.param_name,
+            raw: breach
+          })
+        })
+        
+      });
+    });
+    // for (const p of Object.keys(this.eventTimeline)) {
+    //   for (const ev of this.eventTimeline[p]) {
+    //     flat.push({
+    //       x: ev.startOffset,
+    //       y: ev.duration,
+    //       eventType: p,
+    //       raw: ev
+    //     });
+    //   }
+    // }
 
-    for (const p of Object.keys(this.eventTimeline)) {
-      for (const ev of this.eventTimeline[p]) {
-        flat.push({
-          x: ev.startOffset,
-          y: ev.duration,
-          eventType: p,
-          raw: ev
-        });
-      }
-    }
-
-    flat.sort((a, b) => a.x - b.x);
+    //flat.sort((a, b) => a.x - b.x);
 
     const canvas = document.getElementById(
       'mergedEventTimelineChart'
@@ -293,10 +306,11 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
     ];
 
     let ci = 0;
-    for (const p of this.parameterKeys) {
-      palette[p] = baseColors[ci++ % baseColors.length];
+    for (const p of breaches) {
+      palette[p.param_name] = baseColors[ci++ % baseColors.length];
     }
-
+    console.log('palette', palette);
+    console.log('flat', flat);
     this.mergedChart = new Chart(canvas, {
       type: 'bar',
       data: {
@@ -318,12 +332,13 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
             { intersect: true },
             false
           );
-
+          console.log(pts);
           if (pts.length > 0) {
             const idx = pts[0].index;
             const d = this.mergedChart.data.datasets[0].data[idx];
-            this.highlightSelectedBar(idx);
-            this.playEventSnippet(d.x, d.x + d.y);
+            console.log('d', d)
+            //this.highlightSelectedBar(idx);
+            this.playEventSnippet(d.x, d.x + 5);
           }
         },
         scales: {
@@ -361,22 +376,21 @@ export class TripDashboardComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       const play = () => {
-        video.currentTime = Math.min(startSec, video.duration - 0.5);
+        //video.currentTime = Math.min(startSec, video.duration - 0.5);
         video.play();
+        // const stopper = () => {
+        //   if (video.currentTime >= endSec) {
+        //     video.pause();
+        //     video.removeEventListener('timeupdate', stopper);
+        //   }
+        // };
 
-        const stopper = () => {
-          if (video.currentTime >= endSec) {
-            video.pause();
-            video.removeEventListener('timeupdate', stopper);
-          }
-        };
-
-        video.addEventListener('timeupdate', stopper);
+        // video.addEventListener('timeupdate', stopper);
       };
-
-      if (video.readyState >= 1) play();
-      else video.onloadedmetadata = () => play();
-    }, 50);
+      play();
+      // if (video.readyState >= 1) play();
+      // else video.onloadedmetadata = () => play();
+    }, 500);
   }
 
   closeVideo() {

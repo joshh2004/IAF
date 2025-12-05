@@ -1,14 +1,27 @@
 {
   "name": "trip-importer",
   "version": "0.0.0",
+  "description": "Trip importer desktop application",
+  "author": "UST",
   "main": "electron-main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "electron-forge start",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "electron": "electron ."
+    "electron": "electron .",
+    "build:electron": "electron-builder --win --x64",
+    "build:all": "npm run build && npm run build:electron",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "build": {
+    "win": {
+      "target": "nsis",
+      "forceCodeSigning": false,
+      "signAndEditExecutable": false
+    }
   },
   "private": true,
   "dependencies": {
@@ -22,7 +35,7 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "chart.js": "^4.5.1",
-    "electron": "^39.2.4",
+    "electron-squirrel-startup": "^1.0.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",
     "rxjs": "~7.8.0",
@@ -33,7 +46,16 @@
     "@angular-devkit/build-angular": "^19.2.15",
     "@angular/cli": "^19.2.15",
     "@angular/compiler-cli": "^19.2.0",
+    "@electron-forge/cli": "^7.10.2",
+    "@electron-forge/maker-deb": "^7.10.2",
+    "@electron-forge/maker-rpm": "^7.10.2",
+    "@electron-forge/maker-squirrel": "^7.10.2",
+    "@electron-forge/maker-zip": "^7.10.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
+    "@electron-forge/plugin-fuses": "^7.10.2",
+    "@electron/fuses": "^1.8.0",
     "@types/jasmine": "~5.1.0",
+    "electron": "^39.2.4",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
